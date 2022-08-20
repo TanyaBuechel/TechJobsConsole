@@ -49,7 +49,8 @@ namespace TechJobsConsole
             {
                 string aValue = row[column];
 
-                if (aValue.Contains(value))
+                //Changed to case insensitive
+                if (aValue.ToLower().Contains(value.ToLower()))
                 {
                     jobs.Add(row);
                 }
@@ -137,6 +138,37 @@ namespace TechJobsConsole
             valueBuilder.Clear();
 
             return rowValues.ToArray();
+        }
+
+        //FindByValue Method
+
+        //Only takes in a value because we are not searching through specific column
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            //Iterate through AllJobs list
+            foreach (Dictionary<string, string> job in AllJobs)
+            {
+                //Iterate through jobs (dictionary)
+                foreach (KeyValuePair<string, string> valuePair in job)
+                {
+                    //Check if any value pair in job dictionary contains the search value - case insensitive
+                    if (valuePair.Value.ToLower().Contains(value.ToLower()))
+                    {
+                        //If the jobs list does not already contain the job, the job will be added to the list
+                        if (!jobs.Contains(job))
+                        jobs.Add(job);
+                    }
+                }
+
+                
+            }
+
+            return jobs;
         }
     }
 }
